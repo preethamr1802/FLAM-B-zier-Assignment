@@ -12,7 +12,7 @@
   <canvas id="c"></canvas>
 
 <script>
-// -------------------- VECTOR HELPERS --------------------
+// vector specifications
 function v(x=0,y=0){ return {x:x, y:y}; }
 function add(a,b){ return {x: a.x + b.x, y: a.y + b.y}; }
 function sub(a,b){ return {x: a.x - b.x, y: a.y - b.y}; }
@@ -20,7 +20,7 @@ function mul(a, s){ return {x: a.x * s, y: a.y * s}; }
 function length(a){ return Math.hypot(a.x, a.y); }
 function normalize(a){ const L = length(a) || 1; return {x: a.x / L, y: a.y / L}; }
 
-// -------------------- BEZIER FORMULAS --------------------
+//  BEZIER FORMULAS
 // Evaluate cubic Bezier point at t in [0,1]
 function bezierPoint(t, P0,P1,P2,P3){
   const u = 1 - t;
@@ -43,7 +43,7 @@ function bezierTangent(t, P0,P1,P2,P3){
   return add(add(a,b),c);
 }
 
-// -------------------- CANVAS SETUP --------------------
+// CANVAS SETUP 
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d', { alpha: false });
 function resize(){
@@ -57,7 +57,7 @@ function resize(){
 window.addEventListener('resize', resize);
 resize();
 
-// -------------------- CONTROL POINTS --------------------
+//  CONTROL POINTS 
 const P0 = v(80, window.innerHeight - 80);    // left fixed endpoint
 const P3 = v(window.innerWidth - 80, 80);     // right fixed endpoint
 
@@ -65,7 +65,7 @@ function makeDynamic(x,y){ return { pos: v(x,y), vel: v(0,0), target: v(x,y) }; 
 const P1 = makeDynamic(window.innerWidth * 0.35, window.innerHeight * 0.5);
 const P2 = makeDynamic(window.innerWidth * 0.65, window.innerHeight * 0.5);
 
-// -------------------- PHYSICS (spring-damper) --------------------
+//  PHYSICS (spring-damper)
 let K = 400; // spring strength
 let C = 40;  // damping
 const mass = 1;
@@ -81,7 +81,7 @@ function physicsStep(body, dt){
   body.pos.y += body.vel.y * dt;
 }
 
-// -------------------- MOUSE INPUT --------------------
+//  MOUSE INPUT 
 let mouse = null;
 canvas.addEventListener('mousemove', (e) => {
   mouse = { x: e.clientX, y: e.clientY };
@@ -106,7 +106,7 @@ window.addEventListener('mousemove', (e) => {
   if (dragging === 'P2'){ P2.target.x = e.clientX; P2.target.y = e.clientY; }
 });
 
-// -------------------- ANIMATION LOOP --------------------
+//  ANIMATION LOOP
 let last = performance.now();
 function frame(now){
   const dt = Math.min((now - last) / 1000, 1/15);
@@ -124,7 +124,7 @@ function frame(now){
 }
 requestAnimationFrame(frame);
 
-// -------------------- DRAWING --------------------
+//DRAWING
 function draw(){
   ctx.fillStyle = '#111';
   ctx.fillRect(0,0, window.innerWidth, window.innerHeight);
@@ -177,3 +177,4 @@ function draw(){
 </script>
 </body>
 </html>
+
